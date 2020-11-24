@@ -10,14 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.ChatRoomsViewHolder> {
     ArrayList<RoomItem> roomitem;
     Context context;
+    private OnRecyItemClickListener itemClickListener;
 
+    public void setOnRoomsItemClickListener(OnRecyItemClickListener listener){
+        itemClickListener = listener;
+    }
 
     public ChatRoomsAdapter(Context c, String[] title, int[] img ){
         roomitem = new ArrayList<RoomItem>();
@@ -45,12 +48,23 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
         return roomitem.size();
     }
 
-    public static class ChatRoomsViewHolder extends RecyclerView.ViewHolder {
+    public class ChatRoomsViewHolder extends RecyclerView.ViewHolder {
         CircleImageView img;
         TextView title;
 
-        public ChatRoomsViewHolder(@NonNull View itemView) {
+        public ChatRoomsViewHolder(@NonNull final View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View view){
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        if(itemClickListener != null){
+                            itemClickListener.onItemClick(view, pos);
+                        }
+                    }
+
+                }
+            });
             img = itemView.findViewById(R.id.circleimage);
             title = itemView.findViewById(R.id.title_view);
 

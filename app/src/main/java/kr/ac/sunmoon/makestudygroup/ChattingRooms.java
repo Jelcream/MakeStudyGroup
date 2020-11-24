@@ -1,5 +1,6 @@
 package kr.ac.sunmoon.makestudygroup;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,7 +87,13 @@ public class ChattingRooms extends Fragment {
         }
         mAdapter = new ChatRoomsAdapter(viewGroup.getContext(),title,img);
         recyclerView.setAdapter(mAdapter);
-
+        ((ChatRoomsAdapter)mAdapter).setOnRoomsItemClickListener(new OnRecyItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(view.getContext(), SecondPage.class);
+                startActivity(intent);
+            }
+        });
         return  viewGroup;
     }
 }

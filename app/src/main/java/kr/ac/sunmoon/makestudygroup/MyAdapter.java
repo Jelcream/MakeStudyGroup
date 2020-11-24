@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,13 +17,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     ArrayList<CardItem> cards;
     Context context;
     //Lobby의 어댑터
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    private OnRecyItemClickListener recyListener;
+    public void setRecyListener(OnRecyItemClickListener listener){
+        this.recyListener = listener;
+    }
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView title, author;
         ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v){
+                    int pos = getAdapterPosition();
+                    if(RecyclerView.NO_POSITION != pos){
+                        if(recyListener != null) {
+                            recyListener.onItemClick(v, pos);
+                        }
+                        Toast.makeText(context, "test position" + pos, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
             title = itemView.findViewById(R.id.title);
             author = itemView.findViewById(R.id.author);
             imageView = itemView.findViewById(R.id.imageView2);

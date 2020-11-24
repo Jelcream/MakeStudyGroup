@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".SecondPage">
         </activity>
+        <activity android:name=".FormActivity" android:theme="@android:style/Theme.Dialog"></activity>
     </application>
 
 </manifest>
