@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     ArrayList<CardItem> cards;
     Context context;
+    //Lobby의 어댑터
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView title, author;

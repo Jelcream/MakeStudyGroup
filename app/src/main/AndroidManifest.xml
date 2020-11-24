@@ -18,7 +18,6 @@
         </activity>
         <activity android:name=".SecondPage">
         </activity>
-        <activity android:name=".Lobby"></activity>
     </application>
 
 </manifest>

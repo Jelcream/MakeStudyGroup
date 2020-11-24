@@ -1,20 +1,25 @@
 package kr.ac.sunmoon.makestudygroup;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Lobby extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ChattingRooms#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ChattingRooms extends Fragment {
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,16 +28,15 @@ public class Lobby extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
     private ViewGroup viewGroup;
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutmanager;
-    String title[], author[];
-    int img[];
-    String s1[], s2[];
 
-    public Lobby() {
+
+    public ChattingRooms() {
         // Required empty public constructor
     }
 
@@ -42,11 +46,11 @@ public class Lobby extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
+     * @return A new instance of fragment ChattingRooms.
      */
     // TODO: Rename and change types and number of parameters
-    public static Lobby newInstance(String param1, String param2) {
-        Lobby fragment = new Lobby();
+    public static ChattingRooms newInstance(String param1, String param2) {
+        ChattingRooms fragment = new ChattingRooms();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,34 +70,25 @@ public class Lobby extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.lobby, container, false);
-        //cardView Test Start
-        recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recyclerview);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        // Inflate the layout for this fragment
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.chatting_rooms, container, false);
+        recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recyRooms);
+
         recyclerView.setHasFixedSize(true);
-
         mLayoutmanager = new LinearLayoutManager(viewGroup.getContext());
+
         recyclerView.setLayoutManager(mLayoutmanager);
-        title = new String[10];
-        author = new String[10];
-        img = new int[10];
 
-        for(int i = 0 ; i < 10 ; i++){
-            title[i] = "title"+i;
-        }
-        for(int i = 0; i < 10; i++){
-            author[i] = "author"+i;
-        }
-        for(int i = 0; i< 10; i++){
+        String[] title = new String[10];
+        int[] img = new int[10];
+
+        for(int i = 0 ; i < 10; i++){
             img[i] = R.mipmap.ic_launcher;
+            title[i] = Integer.toString(i);
         }
-
-        mAdapter = new MyAdapter(viewGroup.getContext(), title, author, img);
+        mAdapter = new ChatRoomsAdapter(viewGroup.getContext(),title,img);
         recyclerView.setAdapter(mAdapter);
-        //cardView Test End
 
-        return viewGroup;
+        return  viewGroup;
     }
 }

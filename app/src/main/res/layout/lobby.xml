@@ -16,13 +16,4 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="10"
-        android:background="#FFFFFF"
-        android:id="@+id/bottomNavi"
-        app:menu="@menu/menu"
-        />
-
 </LinearLayout>
