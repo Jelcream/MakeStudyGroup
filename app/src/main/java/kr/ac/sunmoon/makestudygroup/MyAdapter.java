@@ -57,5 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         return cards.size();
     }
 
-
+    public void appendCards(String s, String s1, int img){
+        cards.add(new CardItem(s,s1,img));
+    }
 }
