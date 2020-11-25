@@ -18,7 +18,6 @@ import android.view.ViewGroup;
  */
 public class ChattingRooms extends Fragment {
 
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,7 +89,7 @@ public class ChattingRooms extends Fragment {
         ((ChatRoomsAdapter)mAdapter).setOnRoomsItemClickListener(new OnRecyItemClickListener(){
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(view.getContext(), SecondPage.class);
+                Intent intent = new Intent(view.getContext(), ChattingRoom.class);
                 startActivity(intent);
             }
         });

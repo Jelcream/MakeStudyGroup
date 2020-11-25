@@ -2,10 +2,10 @@ package kr.ac.sunmoon.makestudygroup;
 
 import android.widget.ImageView;
 
-public class CardItem {
+public class PostItem {
     private String title, author;
     private int image;
-    public CardItem(String title, String author, int im){
+    public PostItem(String title, String author, int im){
         this.title= title;
         this.author = author;
         this.image = im;

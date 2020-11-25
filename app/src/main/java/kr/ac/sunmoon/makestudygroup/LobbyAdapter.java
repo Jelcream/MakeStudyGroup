@@ -1,6 +1,7 @@
 package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
-    ArrayList<CardItem> cards;
+public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder>{
+    ArrayList<PostItem> cards;
     Context context;
     //Lobby의 어댑터
     private OnRecyItemClickListener recyListener;
@@ -35,6 +36,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                             recyListener.onItemClick(v, pos);
                         }
                         Toast.makeText(context, "test position" + pos, Toast.LENGTH_LONG).show();
+                        Log.e("Event","Touch Position "+pos);
                     }
                 }
             });
@@ -46,11 +48,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
 
 
-    public MyAdapter(Context c, String s[], String s1[], int img[]){
+    public LobbyAdapter(Context c, String s[], String s1[], int img[]){
         context = c;
-        cards = new ArrayList<CardItem>();
+        cards = new ArrayList<PostItem>();
         for(int i = 0; i < s.length; i++){
-            cards.add(new CardItem(s[i], s1[i], img[i]));
+            cards.add(new PostItem(s[i], s1[i], img[i]));
         }
     }
     @NonNull
@@ -74,6 +76,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     }
 
     public void appendCards(String s, String s1, int img){
-        cards.add(new CardItem(s,s1,img));
+        cards.add(new PostItem(s,s1,img));
     }
 }

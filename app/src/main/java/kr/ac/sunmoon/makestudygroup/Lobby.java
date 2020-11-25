@@ -57,6 +57,7 @@ public class Lobby extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -90,7 +91,7 @@ public class Lobby extends Fragment {
             img[i] = R.mipmap.ic_launcher;
         }
 
-        mAdapter = new MyAdapter(viewGroup.getContext(), title, author, img);
+        mAdapter = new LobbyAdapter(viewGroup.getContext(), title, author, img);
         recyclerView.setAdapter(mAdapter);
         //cardView Test End
 
