@@ -16,13 +16,15 @@ public class LayoutMain extends AppCompatActivity {
     private Fragment lobby, chattingRooms;
     private BottomNavigationView bottomNavigationView;
     private FloatingActionButton fab;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout_main);
 //        Intent intent = new Intent(getApplicationContext(), Lobby.class);
 //        startActivity(intent);
-
+        Intent intent = getIntent();
+        user = MyUser.getInstance().getUser();
         bottomNavigationView = findViewById(R.id.bottomNavi);
         fab = findViewById(R.id.floatingActionButton);
         // 프래그먼트 생성

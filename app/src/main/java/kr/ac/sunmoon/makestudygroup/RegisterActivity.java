@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public  void register(){
-        String passwd = editPasswd.getText().toString();
+        final String passwd = editPasswd.getText().toString();
         String email = editEmail.getText().toString();
 
         if(passwd.equals("") || email.equals("")){
@@ -84,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("email",emails);
                                 hashMap.put("name",name);
                                 hashMap.put("phone",phone);
+                                hashMap.put("pw",passwd);
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("Users");

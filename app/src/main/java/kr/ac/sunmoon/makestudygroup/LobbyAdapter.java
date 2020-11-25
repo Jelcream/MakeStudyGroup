@@ -48,12 +48,9 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder
 
 
 
-    public LobbyAdapter(Context c, String s[], String s1[], int img[]){
+    public LobbyAdapter(Context c, ArrayList<PostItem> cards){
         context = c;
-        cards = new ArrayList<PostItem>();
-        for(int i = 0; i < s.length; i++){
-            cards.add(new PostItem(s[i], s1[i], img[i]));
-        }
+        this.cards = cards;
     }
     @NonNull
     @Override
@@ -76,6 +73,6 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder
     }
 
     public void appendCards(String s, String s1, int img){
-        cards.add(new PostItem(s,s1,img));
+        cards.add(null);
     }
 }

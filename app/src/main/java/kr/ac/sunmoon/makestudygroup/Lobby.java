@@ -2,24 +2,34 @@ package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class Lobby extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private ArrayList<PostItem> cards;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -62,6 +72,38 @@ public class Lobby extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Post");
+        cards = new ArrayList<PostItem>();
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.e("Lobby test", snapshot.getKey()+" "+cards.size());
+                cards.add(snapshot.getValue(PostItem.class));
+                mAdapter.notifyDataSetChanged();
+                Log.e("card test",cards.get(cards.size()-1).getAuthor());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -77,21 +119,21 @@ public class Lobby extends Fragment {
 
         mLayoutmanager = new LinearLayoutManager(viewGroup.getContext());
         recyclerView.setLayoutManager(mLayoutmanager);
-        title = new String[10];
-        author = new String[10];
-        img = new int[10];
+//        title = new String[10];
+//        author = new String[10];
+//        img = new int[10];
+//
+//        for(int i = 0 ; i < 10 ; i++){
+//            title[i] = "title"+i;
+//        }
+//        for(int i = 0; i < 10; i++){
+//            author[i] = "author"+i;
+//        }
+//        for(int i = 0; i< 10; i++){
+//            img[i] = R.mipmap.ic_launcher;
+//        }
 
-        for(int i = 0 ; i < 10 ; i++){
-            title[i] = "title"+i;
-        }
-        for(int i = 0; i < 10; i++){
-            author[i] = "author"+i;
-        }
-        for(int i = 0; i< 10; i++){
-            img[i] = R.mipmap.ic_launcher;
-        }
-
-        mAdapter = new LobbyAdapter(viewGroup.getContext(), title, author, img);
+        mAdapter = new LobbyAdapter(viewGroup.getContext(),cards);
         recyclerView.setAdapter(mAdapter);
         //cardView Test End
 
