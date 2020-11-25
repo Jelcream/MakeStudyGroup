@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:padding="50dp"
     android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:src="@drawable/logo"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,9 +19,9 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="ID : "
+            android:text="@string/loginEmail"
             android:textSize="25dp"/>
         <EditText
             android:id="@+id/inputBox_id"
@@ -30,9 +36,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="PW : "
+            android:text="@string/loginPassword"
+            android:gravity="center_horizontal"
             android:textSize="25dp"/>
         <EditText
             android:id="@+id/inputBox_pw"
@@ -45,22 +52,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="25dp"
-            android:text="Login"/>
+            android:textSize="20dp"
+            android:text="@string/loginButton"/>
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="25dp"
-            android:text="회원가입"/>
+            android:textSize="20dp"
+            android:text="@string/loginButton_register"/>
 
     </LinearLayout>
 </LinearLayout>

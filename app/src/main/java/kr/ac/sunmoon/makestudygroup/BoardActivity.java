@@ -27,7 +27,6 @@ public class BoardActivity extends AppCompatActivity {
     private ArrayList<Board> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    MyAdapter myAdapter;
     FloatingActionButton btnAdd, btnFind;
     //DatabaseReference databaseReference;
 
@@ -101,10 +100,10 @@ public class BoardActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WriteActivity.class);
+                /*Intent intent = new Intent(getApplicationContext(), WriteActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("pass", pass);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 

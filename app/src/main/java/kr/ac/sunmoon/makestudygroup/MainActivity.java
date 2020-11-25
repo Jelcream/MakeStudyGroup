@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void register() {
-
+        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
     }
 
     public void runLogin(){
