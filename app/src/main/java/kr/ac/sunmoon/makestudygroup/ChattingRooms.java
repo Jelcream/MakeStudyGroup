@@ -3,13 +3,25 @@ package kr.ac.sunmoon.makestudygroup;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +44,7 @@ public class ChattingRooms extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutmanager;
-
+    private ArrayList<GroupItem> groupItems;
 
     public ChattingRooms() {
         // Required empty public constructor
@@ -59,10 +71,93 @@ public class ChattingRooms extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference groupDB = firebaseDatabase.getReference("Group");
+        DatabaseReference userRoomDB = firebaseDatabase.getReference("UserRoom");
+        final User user = MyUser.getInstance().getUser();
+        final HashMap<Object, String> map = new HashMap<>();
+        groupItems = new ArrayList<GroupItem>();
+        userRoomDB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.getKey().equals(user.getUid())){
+                    for(DataSnapshot s : snapshot.getChildren()){
+                        map.put(s.getValue(),s.getKey());
+                        Log.e("snapshot chatting", s.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        groupDB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String title = null, uid = null;
+                if(map.containsKey(snapshot.getKey())){
+                    Log.e("groupDB map test", snapshot.getKey());
+                    for(DataSnapshot s : snapshot.getChildren()){
+                        Log.e("snapshot children", s.getKey());
+                        if(s.getKey().equals("GroupID")){
+                            uid = (String)s.getValue();
+                        }else if(s.getKey().equals("GroupTitle")){
+                            title = (String)s.getValue();
+                        }
+                    }
+                    if(title != null && uid != null) {
+                        groupItems.add(new GroupItem(title, uid));
+                        Log.e("roomitem", groupItems.get(groupItems.size()-1).getTitle());
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override
@@ -77,19 +172,20 @@ public class ChattingRooms extends Fragment {
 
         recyclerView.setLayoutManager(mLayoutmanager);
 
-        String[] title = new String[10];
-        int[] img = new int[10];
-
-        for(int i = 0 ; i < 10; i++){
-            img[i] = R.mipmap.ic_launcher;
-            title[i] = Integer.toString(i);
-        }
-        mAdapter = new ChatRoomsAdapter(viewGroup.getContext(),title,img);
+//        String[] title = new String[10];
+//        int[] img = new int[10];
+//
+//        for(int i = 0 ; i < 10; i++){
+//            img[i] = R.mipmap.ic_launcher;
+//            title[i] = Integer.toString(i);
+//        }
+        mAdapter = new ChatRoomsAdapter(viewGroup.getContext(), groupItems);
         recyclerView.setAdapter(mAdapter);
         ((ChatRoomsAdapter)mAdapter).setOnRoomsItemClickListener(new OnRecyItemClickListener(){
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(view.getContext(), ChattingRoom.class);
+                intent.putExtra("Uid", groupItems.get(position).getId());
                 startActivity(intent);
             }
         });

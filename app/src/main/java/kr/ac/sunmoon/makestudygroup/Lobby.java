@@ -135,6 +135,15 @@ public class Lobby extends Fragment {
 
         mAdapter = new LobbyAdapter(viewGroup.getContext(),cards);
         recyclerView.setAdapter(mAdapter);
+        ((LobbyAdapter)mAdapter).setRecyListener(new OnRecyItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                PostItem post = ((LobbyAdapter) mAdapter).cards.get(position);
+                Intent intent = new Intent(getContext(),ReadFormActivity.class);
+                intent.putExtra("Post", post);
+                startActivity(intent);
+            }
+        });
         //cardView Test End
 
         return viewGroup;

@@ -31,7 +31,7 @@ public class FormActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//타이틀 없애기
         setContentView(R.layout.form_popup);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmddHHMMSS");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmSS");
         Date date = new Date();
 
         edit = findViewById(R.id.edit_content);
@@ -49,7 +49,15 @@ public class FormActivity extends Activity {
     public void addContent(View v){
         FirebaseDatabase mDatabase =FirebaseDatabase.getInstance();
         DatabaseReference DBref = mDatabase.getReference("Post");
-        HashMap<Object,String> hashmap = new HashMap<Object,String>();
+        DatabaseReference DBGroup = mDatabase.getReference("Group");
+        DatabaseReference DBUsRO = mDatabase.getReference("UserRoom");
+        String Uid = editorUid+"-"+dateStr;
+        User user = MyUser.getInstance().getUser();
+        HashMap<Object,String> UsRoMap, groupMap,groupUserListMap,hashmap = new HashMap<Object,String>();
+        groupMap = new HashMap<>();
+        groupUserListMap = new HashMap<>();
+        UsRoMap = new HashMap<>();
+
         titleStr = title.getText().toString().trim();
         contents = edit.getText().toString();
         if(titleStr.equals("")||titleStr == null||contents.equals("") || contents == null){
@@ -61,7 +69,19 @@ public class FormActivity extends Activity {
         hashmap.put("contents", contents);
         hashmap.put("uid", editorUid+"-"+dateStr);
         hashmap.put("authorUid", editorUid);
-        DBref.child(editorUid+"-"+dateStr).setValue(hashmap);
+        DBref.child(Uid).setValue(hashmap);
+
+        groupMap.put("GroupTitle", titleStr);
+        groupMap.put("GroupID", Uid);
+        DBGroup.child(Uid).setValue(groupMap);
+
+        groupUserListMap.put("name", user.getName());
+        groupUserListMap.put("email",user.getEmail());
+        DBGroup.child(Uid).child("UserList").child(user.getUid()).setValue(groupUserListMap);
+
+        UsRoMap.put(dateStr, Uid);
+        DBUsRO.child(user.getUid()).setValue(UsRoMap);
+
         //데이터베이스에 등록
         finish();
     }

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PostItem {
+public class PostItem implements Serializable {
     private String title, author;
     private String contents;
     private String uid, authorUid;

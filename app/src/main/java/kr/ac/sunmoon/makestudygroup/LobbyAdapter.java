@@ -1,6 +1,7 @@
 package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder>{
     ArrayList<PostItem> cards;
     Context context;
+
     //Lobby의 어댑터
     private OnRecyItemClickListener recyListener;
     public void setRecyListener(OnRecyItemClickListener listener){
