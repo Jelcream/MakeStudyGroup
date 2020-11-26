@@ -1,9 +1,5 @@
 package kr.ac.sunmoon.makestudygroup;
 
-<<<<<<< HEAD
-import android.content.Intent;
-=======
->>>>>>> jelcream
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,11 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public  void register(){
-<<<<<<< HEAD
-        String passwd = editPasswd.getText().toString();
-=======
         final String passwd = editPasswd.getText().toString();
->>>>>>> jelcream
         String email = editEmail.getText().toString();
 
         if(passwd.equals("") || email.equals("")){
@@ -77,35 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.createUserWithEmailAndPassword(email, passwd)
                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-<<<<<<< HEAD
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                        String emails = user.getEmail();
-                        String uid = user.getUid();
-                        String name = editName.getText().toString();
-                        String phone = editPhone.getText().toString();
-                        HashMap<Object,String> hashMap = new HashMap<>();
-
-                        hashMap.put("uid",uid);
-                        hashMap.put("email",emails);
-                        hashMap.put("name",name);
-                        hashMap.put("phone",phone);
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference reference = database.getReference("Users");
-                        reference.child(uid).setValue(hashMap);
-
-                        Toast.makeText(getApplicationContext(), "회원가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "회원가입에 실패하셨습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-=======
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
@@ -134,7 +98,6 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         }
                     });
->>>>>>> jelcream
         }
     }
 }

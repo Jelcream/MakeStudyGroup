@@ -1,39 +1,4 @@
 package kr.ac.sunmoon.makestudygroup;
-
-<<<<<<< HEAD
-public class User {
-    private String id;
-    private String passwd;
-    private String name;
-    private String phone;
-    private String email;
-
-    public User(){}
-
-    public User(String id, String passwd, String name, String phone, String email) {
-        this.id = id;
-        this.passwd = passwd;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPasswd() {
-        return passwd;
-    }
-
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
-    }
-=======
 import androidx.core.util.ObjectsCompat;
 
 import java.io.Serializable;
@@ -52,8 +17,6 @@ public class User {
         this.pw = pw;
     }
     public User(){}
->>>>>>> jelcream
-
     public String getName() {
         return name;
     }
@@ -62,8 +25,6 @@ public class User {
         this.name = name;
     }
 
-<<<<<<< HEAD
-=======
     public String getUid() {
         return uid;
     }
@@ -72,7 +33,6 @@ public class User {
         this.uid = uid;
     }
 
->>>>>>> jelcream
     public String getPhone() {
         return phone;
     }
@@ -88,8 +48,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-<<<<<<< HEAD
-=======
     public Map<Object, String> toMap(){
         Map<Object, String> result = new HashMap<>();
         result.put("name", this.name);
@@ -107,5 +65,4 @@ public class User {
     public void setPw(String pw) {
         this.pw = pw;
     }
->>>>>>> jelcream
 }

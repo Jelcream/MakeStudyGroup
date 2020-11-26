@@ -1,26 +1,4 @@
 package kr.ac.sunmoon.makestudygroup;
-
-<<<<<<< HEAD
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-=======
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,8 +37,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
->>>>>>> jelcream
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "";
     TextView input_id, input_pw;
@@ -102,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> jelcream
     private void register() {
         startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
     }
@@ -113,26 +85,6 @@ public class MainActivity extends AppCompatActivity {
     public void runLogin(){
         final String email = input_id.getText().toString();
         final String pass = input_pw.getText().toString();
-<<<<<<< HEAD
-        if(email == null){
-            Toast.makeText(getApplicationContext(), "please input your email", Toast.LENGTH_SHORT).show();
-            return;
-        }else if(pass == null){
-            Toast.makeText(getApplicationContext(), "please input your passwd", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    //인증 절
-        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {    //로그인 결과 : taskㅇ
-                if(task.isSuccessful()){
-                    //Toast.makeText(getApplicationContext(), "Login Success",Toast.LENGTH_SHORT).show();
-                    finish();
-                    //startActivity(new Intent(getApplicationContext(), BoardActivity.class));
-                    Intent intent = new Intent(getApplicationContext(), BoardActivity.class);
-                    intent.putExtra("email", email);
-                    intent.putExtra("pass", pass);
-=======
         if(email == null || email.equals("")){
             Toast.makeText(getApplicationContext(), "please input your email", Toast.LENGTH_SHORT).show();
             return;
@@ -189,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                     //startActivity(new Intent(getApplicationContext(), BoardActivity.class));
                     Intent intent = new Intent(getApplicationContext(), LayoutMain.class);
                     Log.e("Database test", "complete");
->>>>>>> jelcream
                     startActivity(intent);
                 }else{
                     Toast.makeText(getApplicationContext(), "Login Failed",Toast.LENGTH_SHORT).show();

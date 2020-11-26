@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:padding="50dp"
-<<<<<<< HEAD
-=======
     android:background="@color/colorWhite"
->>>>>>> jelcream
     android:orientation="vertical">
 
     <ImageView
