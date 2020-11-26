@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
+<<<<<<< HEAD
+=======
+    android:background="@color/colorWhite"
+>>>>>>> jelcream
     android:gravity="center|center_vertical"
     android:orientation="vertical">
 
