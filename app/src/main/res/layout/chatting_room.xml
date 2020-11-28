@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ChattingRoom"
     android:orientation="vertical">
 
 
@@ -52,6 +54,7 @@
                     android:id="@+id/chat_send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="sendText"
                     android:text="send" />
             </LinearLayout>
         </LinearLayout>
@@ -63,10 +66,6 @@
             android:layout_gravity="right"
             android:orientation="vertical"
             android:background="#FFFFFF">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RightContents"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

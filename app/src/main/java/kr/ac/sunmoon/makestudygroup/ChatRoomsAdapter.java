@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.ChatRoomsViewHolder> {
-    ArrayList<RoomItem> roomitem;
+    ArrayList<GroupItem> roomitem;
     Context context;
     private OnRecyItemClickListener itemClickListener;
 
@@ -22,12 +22,9 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
         itemClickListener = listener;
     }
 
-    public ChatRoomsAdapter(Context c, String[] title, int[] img ){
-        roomitem = new ArrayList<RoomItem>();
+    public ChatRoomsAdapter(Context c, ArrayList<GroupItem> roomitem ){
+        this.roomitem = roomitem;
         this.context = c;
-        for(int i = 0; i <title.length; i++){
-            roomitem.add(new RoomItem(title[i], img[i]));
-        }
     }
     @NonNull
     @Override
@@ -62,7 +59,6 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
                             itemClickListener.onItemClick(view, pos);
                         }
                     }
-
                 }
             });
             img = itemView.findViewById(R.id.circleimage);

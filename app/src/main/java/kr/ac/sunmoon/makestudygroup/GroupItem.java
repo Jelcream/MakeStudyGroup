@@ -1,12 +1,13 @@
 package kr.ac.sunmoon.makestudygroup;
 
-public class RoomItem {
-    private int image;
+public class GroupItem {
+    private int image = R.mipmap.ic_launcher;
     private String title;
     private String id;
-    public  RoomItem(String ti, int im){
+
+    public GroupItem(String ti, String id){
         this.title = ti;
-        this.image = im;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -21,4 +22,6 @@ public class RoomItem {
     public void setImage(int image) {
         this.image = image;
     }
+    public void setId(String id){this.id = id;}
+    public String getId(){return this.id;}
 }
