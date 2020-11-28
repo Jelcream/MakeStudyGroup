@@ -41,7 +41,6 @@ public class ReadFormActivity extends Activity {
         title.setText(post.getTitle());
         content.setText(post.getContents());
         editor.setText(post.getAuthor());
-
     }
     public void registTheRoom(View view){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();

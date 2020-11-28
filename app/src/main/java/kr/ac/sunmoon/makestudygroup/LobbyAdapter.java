@@ -2,6 +2,7 @@ package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -69,7 +71,9 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.title.setText(cards.get(position).getTitle());
         holder.author.setText(cards.get(position).getAuthor());
-        holder.imageView.setImageResource(cards.get(position).getImage());
+        //holder.imageView.setImageResource(cards.get(position).getImage());
+        //holder.imageView.setImageResource(cards.get(position).getImage());
+        Glide.with(holder.imageView.getContext()).load(cards.get(position).getImage()).into(holder.imageView);
     }
 
     @Override

@@ -1,26 +1,38 @@
 package kr.ac.sunmoon.makestudygroup;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,18 +45,10 @@ public class FormActivity extends Activity {
     String dateStr;
     String editorUid;
 
-
-    private Uri mDownloadImageUri; //프로필사진 스토리지 URI
-    private String mTmpDownloadImageUri; //Shared에서 받아올떄 String형이라 임시로 받아오는데 사용
-    private Bitmap img; //비트맵 프로필사진 (이걸.
-    private StorageReference mStorageRef; //파이어베이스 스토리지
-    private StorageReference mProfileRef; //프로필이미지 담을 파베 스토리
-
-    //RequestCode
-    final static int PICK_IMAGE = 1; //갤러리에서 사진선택
-    final static int CAPTURE_IMAGE = 2;  //카메라로찍은 사진선택
-    private String mCurrentPhotoPath; //카메라로 찍은 사진 저장할 루트경로\
-    FirebaseFirestore db; //파이어스토어 디비
+    private static final int GALLERY_CODE = 10;
+    ImageView imageView;
+    private String imagePath;
+    FirebaseStorage firebaseStorage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,13 +71,16 @@ public class FormActivity extends Activity {
 
     }
     public void addContent(View v){
-        FirebaseDatabase mDatabase =FirebaseDatabase.getInstance();
-        DatabaseReference DBref = mDatabase.getReference("Post");
-        DatabaseReference DBGroup = mDatabase.getReference("Group");
-        DatabaseReference DBUsRO = mDatabase.getReference("UserRoom");
-        String Uid = editorUid+"-"+dateStr;
-        User user = MyUser.getInstance().getUser();
-        HashMap<Object,String> UsRoMap, groupMap,groupUserListMap,hashmap = new HashMap<Object,String>();
+        final FirebaseDatabase mDatabase =FirebaseDatabase.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageRef = firebaseStorage.getReferenceFromUrl("gs://makestudygroup-5eb3a.appspot.com");
+
+        final DatabaseReference DBref = mDatabase.getReference("Post");
+        final DatabaseReference DBGroup = mDatabase.getReference("Group");
+        final DatabaseReference DBUsRO = mDatabase.getReference("UserRoom");
+        final String Uid = editorUid+"-"+dateStr;
+        final User user = MyUser.getInstance().getUser();
+        final HashMap<Object,String> UsRoMap, groupMap,groupUserListMap,hashmap = new HashMap<Object,String>();
         groupMap = new HashMap<>();
         groupUserListMap = new HashMap<>();
         UsRoMap = new HashMap<>();
@@ -84,6 +91,30 @@ public class FormActivity extends Activity {
             Toast.makeText(getApplicationContext(),"내용을 채워주세요",Toast.LENGTH_LONG).show();
             return;
         }
+
+        Uri file = Uri.fromFile(new File(imagePath));
+        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+        UploadTask uploadTask = riversRef.putFile(file);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                @SuppressWarnings("VisibleForTests")
+                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+
+                hashmap.put("image", downloadUrl.toString());
+
+            }
+        });
+
         hashmap.put("title", titleStr);
         hashmap.put("author", editor);
         hashmap.put("contents", contents);
@@ -101,41 +132,42 @@ public class FormActivity extends Activity {
 
         UsRoMap.put(dateStr, Uid);
         DBUsRO.child(user.getUid()).setValue(UsRoMap);
-
         //데이터베이스에 등록
         finish();
     }
 
     public void addImg(View v){
-
         photoDialogRadio();
-
-        finish();
     }
     //사진찍기 or 앨범에서 가져오기 선택 다이얼로그
     private void photoDialogRadio() {
-        final CharSequence[] PhotoModels = {"갤러리에서 가져오기", "카메라로 촬영 후 가져오기", "기본사진으로 하기"};
-        AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-        //alt_bld.setIcon(R.drawable.icon);
-        alt_bld.setTitle("배경사진 설정");
-        alt_bld.setSingleChoiceItems(PhotoModels, -1, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(FormActivity.this, PhotoModels[item] + "가 선택되었습니다.", Toast.LENGTH_SHORT).show();
-                if (item == 0) { //갤러리
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(intent, PICK_IMAGE);
-                } else if (item == 1) { //카메라찍은 사진가져오기
-                    //takePictureFromCameraIntent();
-                } else { //기본화면으로하기
-                    //mPhotoCircleImageView.setImageResource(R.drawable.profile);
-                    img = null;
-                    mTmpDownloadImageUri = null;
-                }
-            }
-        });
-        AlertDialog alert = alt_bld.create();
-        alert.show();
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+
+        startActivityForResult(intent, GALLERY_CODE);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == GALLERY_CODE){
+            String path = getPath(data.getData());
+            imagePath = path;
+            File file = new File(path);
+            //imageView.setImageURI(Uri.fromFile(file));
+
+            //upload(path);
+        }
+    }
+    public String getPath(Uri uri){
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader cursorLoader = new CursorLoader(this, uri, proj,null, null, null);
+
+        Cursor cursor = cursorLoader.loadInBackground();
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        return cursor.getString(index);
+    }
+
 }

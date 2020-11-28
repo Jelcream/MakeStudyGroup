@@ -10,7 +10,7 @@ public class PostItem implements Serializable {
     private String title, author;
     private String contents;
     private String uid, authorUid;
-    private int image = R.mipmap.ic_launcher;
+    private String image;
     public Map<Object, String> stars = new HashMap<>();
     public PostItem(String title, String author, String contents, String uid, String authorUid){
         this.title= title;
@@ -27,7 +27,7 @@ public class PostItem implements Serializable {
     public String getAuthor(){
         return author;
     }
-    public int getImage(){
+    public String getImage(){
         return image;
     }
     public void setTitle(String str){
@@ -36,7 +36,7 @@ public class PostItem implements Serializable {
     public void setAuthor(String auth){
         author = auth;
     }
-    public void setImage(int im){
+    public void setImage(String im){
         image = im;
     }
 
@@ -70,6 +70,7 @@ public class PostItem implements Serializable {
         result.put("authorUid", this.authorUid);
         result.put("contents", this.contents);
         result.put("title", this.title);
+        result.put("image", this.image);
         return result;
     }
 }
