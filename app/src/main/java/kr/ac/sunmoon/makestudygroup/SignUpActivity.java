@@ -1,4 +1,4 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -56,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp() {
         String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
-        String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
+        final String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();
         String passwordCheck = ((EditText) findViewById(R.id.passwordCheckEditText)).getText().toString();
 
         if (email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0) {
@@ -67,9 +71,21 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    startToast("회원가입을 성공했습니다.");
-                                    myStartActivity(MemberinitActivity.class);
 
+                                    String emails = user.getEmail();
+                                    String uid = user.getUid();
+                                    HashMap<Object,String> hashMap = new HashMap<>();
+
+                                    hashMap.put("uid",uid);
+                                    hashMap.put("email",emails);
+                                    hashMap.put("pw",password);
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference reference = database.getReference("Users");
+                                    reference.child(uid).setValue(hashMap);
+
+                                    Toast.makeText(getApplicationContext(), "회원가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    myStartActivity(MemberinitActivity.class);
                                 } else {
                                     if (task.getException() != null) {
                                         startToast(task.getException().toString());

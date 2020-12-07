@@ -1,4 +1,4 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;

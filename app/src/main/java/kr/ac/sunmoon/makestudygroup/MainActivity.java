@@ -100,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {    //로그인 결과 : task
                 if(task.isSuccessful()){
                     final FirebaseUser user = mAuth.getCurrentUser();
-                    HashMap<Object,String> map = new HashMap<>();
-                    map.put("on", "true");
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference();
                     final ArrayList<User> userItem = new ArrayList<User>();

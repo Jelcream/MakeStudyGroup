@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "75559090171",
+    "firebase_url": "https://testproject-8731d.firebaseio.com",
+    "project_id": "testproject-8731d",
+    "storage_bucket": "testproject-8731d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75559090171:android:fa876329954cb73d05fd5e",
+        "android_client_info": {
+          "package_name": "kr.ac.sunmoon.makestudygroup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75559090171-2cjod8tgrj39u3dpvjlsajfbpcs0nca2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.ac.sunmoon.makestudygroup",
+            "certificate_hash": "14c910d320bfcca06e33a9e33feda7f3a9bff657"
+          }
+        },
+        {
+          "client_id": "75559090171-of47f3mcpbipmj3h8b4e4obqgh318342.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.ac.sunmoon.makestudygroup",
+            "certificate_hash": "2bbbc9f7c339f24d527cd5d709e7b1046e00234a"
+          }
+        },
+        {
+          "client_id": "75559090171-550v8sqbtj68cfcbcg9ucajlougc24tt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCail_c-ZjhM0R6-wokODDoEhay11SGrLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75559090171-550v8sqbtj68cfcbcg9ucajlougc24tt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

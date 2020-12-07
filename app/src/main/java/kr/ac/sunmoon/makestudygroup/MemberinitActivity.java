@@ -1,4 +1,4 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 //import android.support.annotation.NonNull;
 //import android.support.v7.app.AppCompatActivity;
@@ -63,22 +67,18 @@ public class MemberinitActivity extends AppCompatActivity {
             MemberInfo memberInfo = new MemberInfo(name,phoneNumber,birthDay,address);
 
             if(user != null) {
-                db.collection("users").document(user.getUid()).set(memberInfo)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                startToast("회원정보를 성공하였습니다.");
-                                //finish();
-                                myStartActivity(LoginActivity.class);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                startToast("회원정보를 실패하였습니다.");
-                                Log.w(TAG,"Error",e);
-                            }
-                        });
+                HashMap<Object,String> hashMap = new HashMap<>();
+                String uid = user.getUid();
+                hashMap.put("name",name);
+                hashMap.put("phone",phoneNumber);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("Users");
+                reference.child(uid).child("name").setValue(name);
+                reference.child(uid).child("phone").setValue(phoneNumber);
+
+                Toast.makeText(getApplicationContext(), "회원가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
+                finish();
             }
         } else {
             startToast("회원정보를 입력해주세요");

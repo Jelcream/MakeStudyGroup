@@ -1,12 +1,14 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -24,6 +26,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth mAuth;
@@ -46,18 +56,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         findViewById(R.id.gotoPasswordRestButton).setOnClickListener(onClickListener);
         findViewById(R.id.signUpButton).setOnClickListener(onClickListener);
 
-        if (mAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(getApplication(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        if (mAuth.getCurrentUser() != null) {
+//            Intent intent = new Intent(getApplication(), MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
+        FirebaseAuth.getInstance().signOut();
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+
             } catch (ApiException e) {
                 e.printStackTrace();
             }
@@ -87,17 +98,46 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),
                 null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+                        if(task.isSuccessful()){
+                            final FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference databaseReference = firebaseDatabase.getReference();
+                            Log.e("Database test", user.getUid());
+
+                            String emails = user.getEmail();
+                            String uid = user.getUid();
+                            String name = user.getDisplayName();
+                            String phone = user.getPhoneNumber();
+                            if(phone == null) phone = "null";
+                            HashMap<Object,String> hashMap = new HashMap<>();
+
+                            hashMap.put("uid",uid);
+                            hashMap.put("email",emails);
+                            hashMap.put("name",name);
+                            hashMap.put("phone",phone);
+                            hashMap.put("pw","non pw");
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("Users");
+                            reference.child(uid).setValue(hashMap);
+                            MyUser myUser = MyUser.getInstance();
+                            myUser.setUid(uid);
+                            myUser.setName(name);
+                            myUser.setEmail(emails);
+                            myUser.setPhone(phone);
+                            myUser.setPw("non pw");
+                            //Toast.makeText(getApplicationContext(), "Login Success",Toast.LENGTH_SHORT).show();
+                            finish();
+                            //startActivity(new Intent(getApplicationContext(), BoardActivity.class));
                             updateUI(user);
-                        } else {
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Login Failed",Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }
@@ -105,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LayoutMain.class);
             startActivity(intent);
             finish();
         }
@@ -137,16 +177,52 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                startToast("로그인을 성공했습니다.");
-                                myStartActivity(MainActivity.class);
-                            } else {
-                                if (task.getException() != null) {
-                                    startToast(task.getException().toString());
-                                }
+                            if(task.isSuccessful()){
+                                final FirebaseUser user = mAuth.getCurrentUser();
+                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                                DatabaseReference databaseReference = firebaseDatabase.getReference();
+                                final ArrayList<User> userItem = new ArrayList<User>();
+                                databaseReference.child("Users").addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                        Log.e("add test Snapshot", snapshot.getKey());
+                                        MyUser myUser = MyUser.getInstance();
+                                        if(snapshot.getKey().equals(user.getUid())) {
+                                            myUser.setUser(snapshot.getValue(User.class));
+                                            Log.e("setting my user", "complete");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                        Log.e("change test Snapshot", snapshot.getKey());
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                                Log.e("Database test", user.getUid());
+                                //Toast.makeText(getApplicationContext(), "Login Success",Toast.LENGTH_SHORT).show();
+                                finish();
+                                //startActivity(new Intent(getApplicationContext(), BoardActivity.class));
+                                updateUI(user);
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Login Failed",Toast.LENGTH_SHORT).show();
+                                updateUI(null);
                             }
-                            // ...
                         }
                     });
 
