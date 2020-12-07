@@ -111,26 +111,17 @@ public class RegisterActivity extends AppCompatActivity {
                                 final HashMap<Object,String> hashMap = new HashMap<>();
                                 Uri file = Uri.fromFile(new File(imagePath));
                                 StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-                                UploadTask uploadTask = riversRef.putFile(file);
+                               riversRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                       final Task<Uri> profileUri = task.getResult().getStorage().getDownloadUrl();
 
-                                // Register observers to listen for when the download is done or if it fails
-                                uploadTask.addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle unsuccessful uploads
-                                    }
-                                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                                        // ...
-                                        @SuppressWarnings("VisibleForTests")
-                                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                                       while(!profileUri.isComplete());
 
-                                        hashMap.put("profile", downloadUrl.toString());
+                                       hashMap.put("profile", profileUri.getResult().toString());
+                                   }
+                               });
 
-                                    }
-                                });
                                 hashMap.put("uid",uid);
                                 hashMap.put("email",emails);
                                 hashMap.put("name",name);

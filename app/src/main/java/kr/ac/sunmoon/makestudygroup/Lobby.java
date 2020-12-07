@@ -79,7 +79,9 @@ public class Lobby extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Log.e("Lobby test", snapshot.getKey()+" "+cards.size());
+                //cards.add(snapshot.getValue(PostItem.class));
                 cards.add(snapshot.getValue(PostItem.class));
+
                 mAdapter.notifyDataSetChanged();
                 Log.e("card test",cards.get(cards.size()-1).getAuthor());
             }
