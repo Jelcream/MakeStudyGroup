@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,7 +39,8 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
     @Override
     public void onBindViewHolder(@NonNull ChatRoomsViewHolder holder, int position) {
         holder.title.setText(roomitem.get(position).getTitle());
-        holder.img.setImageResource(roomitem.get(position).getImage());
+        Glide.with(context).load(roomitem.get(position).getImage()).error(R.drawable.logo).into(holder.img);
+
     }
 
     @Override

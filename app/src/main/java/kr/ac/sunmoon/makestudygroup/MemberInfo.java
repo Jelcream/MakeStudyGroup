@@ -1,4 +1,4 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 public class MemberInfo {
     private String name;

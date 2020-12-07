@@ -1,4 +1,4 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import kr.ac.sunmoon.makestudygroup.R;
 
 //import android.support.annotation.NonNull;
 //import android.support.v7.app.AppCompatActivity;

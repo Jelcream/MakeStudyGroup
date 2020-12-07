@@ -98,12 +98,11 @@ public class RegisterActivity extends AppCompatActivity {
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.createUserWithEmailAndPassword(email, passwd)
                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
+                                final String[] profile_uri = new String[1];
                                 String emails = user.getEmail();
                                 String uid = user.getUid();
                                 String name = editName.getText().toString();
@@ -111,17 +110,18 @@ public class RegisterActivity extends AppCompatActivity {
                                 final HashMap<Object,String> hashMap = new HashMap<>();
                                 Uri file = Uri.fromFile(new File(imagePath));
                                 StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-                               riversRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                riversRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                    @Override
                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                                        final Task<Uri> profileUri = task.getResult().getStorage().getDownloadUrl();
 
                                        while(!profileUri.isComplete());
 
-                                       hashMap.put("profile", profileUri.getResult().toString());
+                                       profile_uri[0] = profileUri.getResult().toString();
                                    }
                                });
-
+                                hashMap.put("profile", profile_uri[0]);
+                                System.out.println("profile >>> "+ profile_uri[0]);
                                 hashMap.put("uid",uid);
                                 hashMap.put("email",emails);
                                 hashMap.put("name",name);

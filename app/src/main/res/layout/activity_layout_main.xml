@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".LayoutMain">
 
-
     <FrameLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
@@ -23,7 +22,31 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="30dp"
             android:onClick="onClickFloat"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            android:src="@drawable/more_menu"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/writebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="100dp"
+            android:clickable="true"
+            android:onClick="onClickFloat"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/write" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="170dp"
+            android:clickable="true"
+            android:onClick="onClickFloat"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/logout" />
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="#FFFFFF"
-        app:menu="@menu/menu" />
+        app:menu="@menu/menu"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

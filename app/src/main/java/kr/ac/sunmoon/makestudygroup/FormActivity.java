@@ -94,53 +94,19 @@ public class FormActivity extends Activity {
             Toast.makeText(getApplicationContext(),"내용을 채워주세요",Toast.LENGTH_LONG).show();
             return;
         }
-
+        final String[] imgUri = {null};
         final Uri file = Uri.fromFile(new File(imagePath));
 
         firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReferenceFromUrl("gs://makestudygroup-5eb3a.appspot.com");
         final StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-        /*
-        final UploadTask uploadTask = riversRef.putFile(file);
-        /*
-
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-               }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-
-                @SuppressWarnings("VisibleForTests")
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                image_uri[0] = downloadUrl.toString();
-
-
-                image_uri[0] = riversRef.getDownloadUrl().toString();
-
-                hashmap.put("image", );
-                hashmap.put("title", titleStr);
-                hashmap.put("author", editor);
-                hashmap.put("contents", contents);
-                hashmap.put("uid", editorUid+"-"+dateStr);
-                hashmap.put("authorUid", editorUid);
-                DBref.child(Uid).setValue(hashmap);
-            }
-        });
-*/
-
         riversRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 final Task<Uri> imageUri = task.getResult().getStorage().getDownloadUrl();
                 while(!imageUri.isComplete());
-
-                hashmap.put("image", imageUri.getResult().toString());
+                imgUri[0] = imageUri.getResult().toString();
+                hashmap.put("image", imgUri[0]);
                 hashmap.put("title", titleStr);
                 hashmap.put("author", editor);
                 hashmap.put("contents", contents);
@@ -150,6 +116,12 @@ public class FormActivity extends Activity {
             }
         });
 
+        groupMap.put("GroupImage", imgUri[0]);
+        System.out.println("imgUri >>> "+ imgUri[0]);
+        System.out.println("imgUri >>> "+ imgUri[0]);
+        System.out.println("imgUri >>> "+ imgUri[0]);
+        System.out.println("imgUri >>> "+ imgUri[0]);
+        System.out.println("imgUri >>> "+ imgUri[0]);
         groupMap.put("GroupTitle", titleStr);
         groupMap.put("GroupID", Uid);
         DBGroup.child(Uid).setValue(groupMap);

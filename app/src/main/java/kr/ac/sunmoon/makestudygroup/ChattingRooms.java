@@ -116,7 +116,7 @@ public class ChattingRooms extends Fragment {
         groupDB.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String title = null, uid = null;
+                String title = null, uid = null, image = null;
                 if(map.containsKey(snapshot.getKey())){
                     Log.e("groupDB map test", snapshot.getKey());
                     for(DataSnapshot s : snapshot.getChildren()){
@@ -125,10 +125,12 @@ public class ChattingRooms extends Fragment {
                             uid = (String)s.getValue();
                         }else if(s.getKey().equals("GroupTitle")){
                             title = (String)s.getValue();
+                        }else if(s.getKey().equals("GroupImage")){
+                            image = (String)s.getValue();
                         }
                     }
                     if(title != null && uid != null) {
-                        groupItems.add(new GroupItem(title, uid));
+                        groupItems.add(new GroupItem(title, uid, image));
                         Log.e("roomitem", groupItems.get(groupItems.size()-1).getTitle());
                         mAdapter.notifyDataSetChanged();
                     }

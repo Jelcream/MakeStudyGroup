@@ -42,18 +42,7 @@ public class Lobby extends Fragment {
     int img[];
     String s1[], s2[];
 
-    public Lobby() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
+    public Lobby() {}
     // TODO: Rename and change types and number of parameters
     public static Lobby newInstance(String param1, String param2) {
         Lobby fragment = new Lobby();
@@ -115,26 +104,10 @@ public class Lobby extends Fragment {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.lobby, container, false);
         //cardView Test Start
         recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recyclerview);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
         mLayoutmanager = new LinearLayoutManager(viewGroup.getContext());
         recyclerView.setLayoutManager(mLayoutmanager);
-//        title = new String[10];
-//        author = new String[10];
-//        img = new int[10];
-//
-//        for(int i = 0 ; i < 10 ; i++){
-//            title[i] = "title"+i;
-//        }
-//        for(int i = 0; i < 10; i++){
-//            author[i] = "author"+i;
-//        }
-//        for(int i = 0; i< 10; i++){
-//            img[i] = R.mipmap.ic_launcher;
-//        }
-
         mAdapter = new LobbyAdapter(viewGroup.getContext(),cards);
         recyclerView.setAdapter(mAdapter);
         ((LobbyAdapter)mAdapter).setRecyListener(new OnRecyItemClickListener() {

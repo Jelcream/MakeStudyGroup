@@ -1,4 +1,4 @@
-package com.example.sns_project;
+package kr.ac.sunmoon.makestudygroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import kr.ac.sunmoon.makestudygroup.LoginActivity;
+import kr.ac.sunmoon.makestudygroup.MemberinitActivity;
+import kr.ac.sunmoon.makestudygroup.R;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;

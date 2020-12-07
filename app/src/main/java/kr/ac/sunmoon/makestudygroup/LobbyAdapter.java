@@ -57,8 +57,6 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder
         }
     }
 
-
-
     public LobbyAdapter(Context c, ArrayList<PostItem> cards){
         context = c;
         this.cards = cards;
@@ -71,25 +69,12 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.MyViewHolder
         return new MyViewHolder(view);
     }
 
+    //xml 값 설정 Glide를 통한 이미지 뷰 설정
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         holder.title.setText(cards.get(position).getTitle());
         holder.author.setText(cards.get(position).getAuthor());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-        System.out.println("URI ><<<<" + cards.get(position).getImage());
-
-        //Glide.with(context).load("https://firebasestorage.googleapis.com/v0/b/makestudygroup-5eb3a.appspot.com/o/images%2FIMG_20201202_191758.jpg?alt=media&token=fa7e09b7-c100-44f3-b323-13b753cf3d77").error(R.drawable.logo).into(holder.imageView);
         Glide.with(context).load(cards.get(position).getImage()).error(R.drawable.logo).into(holder.imageView);
-        //Glide.with(context).load(cards.get(position).getImage()).error(R.drawable.logo).into(holder.imageView);
-
-        //StorageReference httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl("https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg");
-
     }
 
     @Override
